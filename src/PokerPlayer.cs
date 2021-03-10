@@ -62,9 +62,30 @@ namespace Nancy.Simple
                 {
                     return GetHighBetOrCall(player.Stack / 8, game_state, player);
                 }
+                // Zwei Paare
                 else if (CardRecognizer.CheckTwoPair(allcards) && CardRecognizer.CheckTwoPair(comcards) == false)
                 {
-                    return GetHighBetOrCall(player.Stack / 8, game_state, player);
+                    // Wenn auf dem Tisch schon ein Paar liegt
+                    if (CardRecognizer.CheckPair(comcards))
+                    {
+
+                        if (isHeadsUp && game_state.Bet_Index < 5)
+                        {
+                            return GetHighBetOrCall(player.Stack / 8, game_state, player);
+                        }
+                        else if (GetCallBet(game_state, player) <= player.Stack / 8)
+                        {
+                            return GetCallBet(game_state, player);
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    }
+                    else
+                    {
+                        return GetHighBetOrCall(player.Stack / 8, game_state, player);
+                    }
                 }
                 //Raus, wenn bereits 3 gleiche Farben auf dem Tisch liegen
                 else if (CardRecognizer.CheckFlushWithTree(comcards) && comcards.Count == 5)
