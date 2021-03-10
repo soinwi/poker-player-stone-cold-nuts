@@ -11,7 +11,16 @@ namespace Nancy.Simple
             //TODO: Use this method to return the value You want to bet
             var game_state = gameState.ToObject<GameState>();
             var player = game_state.Players[game_state.In_Action];
-            return player.Stack;
+
+            var my_cards = player.Hole_Cards;
+            if (my_cards[0].Rank == my_cards[1].Rank)
+            {
+                return player.Stack
+            }
+            else
+            {
+                return 0;
+            }
 		}
 
 		public static void ShowDown(JObject gameState)
