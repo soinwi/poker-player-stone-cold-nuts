@@ -32,7 +32,7 @@ namespace Nancy.Simple
             }
             else if (my_cards[0].Suit == my_cards[1].Suit && game_state.GetNumberOfRemainingPlayers()<=4)
             {
-                return GetHighBetOrCall(player.Stack / 4, game_state, player);
+                return game_state.GetMinimumRaiseBet();
             }
             else
             {

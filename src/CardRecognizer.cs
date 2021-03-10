@@ -28,7 +28,7 @@ namespace Nancy.Simple
         public static bool CheckStraight(List<Card> cards)
         {
             // order by decending to see order
-            var cardsInOrder = cards.OrderByDescending(a => a.Value).ToList();
+            var cardsInOrder = cards.OrderByDescending(a => a.Rank).ToList();
             // check for ace as can be high and low
             if (cardsInOrder.First().Rank == "A")
             {
