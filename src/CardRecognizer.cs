@@ -13,6 +13,19 @@ namespace Nancy.Simple
             //see if exactly 2 cards card the same rank.
             return cards.GroupBy(card => card.Rank).Count(group => group.Count() == 2) == 1;
         }
+        public static int CheckPairHeigh(List<Card> cards)
+        {
+            //see the value of a pair
+            if (CheckPair(cards))
+            {
+                return Helpers.GetNumericCardValue(cards.GroupBy(card => card.Rank).Where(group => group.Count() == 2).First().First().Rank);
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
 
         public static bool CheckTwoPair(List<Card> cards)
         {
