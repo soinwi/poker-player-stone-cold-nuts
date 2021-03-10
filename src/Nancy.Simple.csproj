@@ -11,7 +11,7 @@
     <RootNamespace>Nancy.Simple</RootNamespace>
     <AssemblyName>Nancy.Simple</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <LangVersion>4</LangVersion>
+    <LangVersion>3</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
