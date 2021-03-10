@@ -21,16 +21,21 @@ namespace Nancy.Simple
             List<Card> comcards = new List<Card>(game_state.Community_Cards);
             mycards.AddRange(comcards);
 
-
             if (CardRecognizer.CheckStraightFlush(mycards) || CardRecognizer.CheckFullHouse(mycards))
             {
                 return GetHighBetOrCall(player.Stack , game_state, player);
             }
-            else if (my_cards[0].Rank == my_cards[1].Rank )
+            else if (CardRecognizer.CheckQuads(mycards) || CardRecognizer.CheckStraight(mycards))
             {
                 return GetHighBetOrCall(player.Stack / 2, game_state, player);
             }
-            else if (my_cards[0].Suit == my_cards[1].Suit && game_state.GetNumberOfRemainingPlayers()<=4)
+            // Bei zwei gleichen Karten in der Hand
+            else if (my_cards[0].Rank == my_cards[1].Rank ) 
+            {
+                return GetHighBetOrCall(player.Stack / 2, game_state, player);
+            }
+            // Gleiche Farbe
+            else if (my_cards[0].Suit == my_cards[1].Suit && game_state.GetNumberOfRemainingPlayers()<=4 && game_state.ProposedRaiseBelow(0.05m) )
             {
                 return game_state.GetMinimumRaiseBet();
             }
