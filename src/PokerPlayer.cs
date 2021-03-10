@@ -33,6 +33,12 @@ namespace Nancy.Simple
             {
                 return GetHighBetOrCall(player.Stack / 4, game_state, player);
             }
+            // Mitgehen, wenn schon mehr des halben Stacks gesetzt
+            else if (player.Bet > player.Stack/2)
+            {
+                return GetCallBet(game_state, player);
+            }
+            // Wenn Karten höher als 9
             else if (mycards.All(c => Helpers.GetNumericCardValue(c.Rank) >= 10))
             { 
                 return GetHighBetOrCall(player.Stack / 8, game_state, player);
