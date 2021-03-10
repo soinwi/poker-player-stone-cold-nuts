@@ -16,11 +16,11 @@ namespace Nancy.Simple
 
             if (my_cards[0].Rank == my_cards[1].Rank)
             {
-                return player.Stack;
+                return player.Stack / 4;
             }
             else
             {
-                if (game_state.Current_Buy_In == game_state.Small_Blind)
+                if (game_state.Current_Buy_In <= 2 * game_state.Small_Blind)
                 {
                     return game_state.Current_Buy_In - player.Bet;
                 }
