@@ -20,6 +20,9 @@ namespace Nancy.Simple
             List<Card> allcards = new List<Card>(player.Hole_Cards);
             List<Card> comcards = new List<Card>(game_state.Community_Cards);
             allcards.AddRange(comcards);
+
+            bool isHeadsUp = game_state.GetNumberOfRemainingPlayers() == 1;
+
             // All In Stone Cold Nuts
             if (CardRecognizer.CheckFullHouse(allcards))
             {
@@ -33,15 +36,28 @@ namespace Nancy.Simple
             {
                 return GetHighBetOrCall(player.Stack / 4, game_state, player);
             }
+            // Mitgehen, wenn schon mehr des halben Stacks gesetzt
+            else if (player.Bet > player.Stack/2)
+            {
+
+                if (isHeadsUp && game_state.Bet_Index < 5)
+                {
+                    return game_state.GetMinimumRaiseBet();
+                }
+                else
+                {
+                    return GetCallBet(game_state, player);
+                }
+            }
             else if (CardRecognizer.CheckTrips(allcards) || CardRecognizer.CheckTwoPair(allcards))
             {
                 return GetHighBetOrCall(player.Stack / 8, game_state, player);
             }
-            else if (CardRecognizer.CheckPair(allcards))
+            else if (CardRecognizer.CheckPair(allcards) && CardRecognizer.CheckPair(comcards)==false)
             {
-                if (CardRecognizer.CheckPairHeigh(allcards)>=12 && CardRecognizer.CheckPair(comcards)==false)
+                if (CardRecognizer.CheckPairHeigh(allcards)>=12)
                 {
-                    if (game_state.Bet_Index < 5)
+                    if (game_state.Bet_Index < 5 )
                     {
                         return game_state.GetMinimumRaiseBet();
                     }
@@ -52,13 +68,15 @@ namespace Nancy.Simple
                 }
                 else
                 {
-                    return GetCallBet(game_state, player);
+                    if (isHeadsUp && game_state.Bet_Index < 5)
+                    {
+                        return game_state.GetMinimumRaiseBet();
+                    }
+                    else
+                    {
+                        return GetCallBet(game_state, player);
+                    }
                 }
-            }
-            // Mitgehen, wenn schon mehr des halben Stacks gesetzt
-            else if (player.Bet > player.Stack/2)
-            {
-                return GetCallBet(game_state, player);
             }
             // Wenn Karten höher als 9
             else if (allcards.All(c => Helpers.GetNumericCardValue(c.Rank) >= 10))
@@ -95,11 +113,12 @@ namespace Nancy.Simple
                 }
             }
             else
-            {
+            {   //Mitgehen, wenn nur der BIG drin ist
                 if (game_state.Current_Buy_In <= 2 * game_state.Small_Blind)
                 {
                     return game_state.Current_Buy_In - player.Bet;
                 }
+                //raus
                 return 0;
             }
 		}
