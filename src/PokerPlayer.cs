@@ -13,8 +13,13 @@ namespace Nancy.Simple
             var player = game_state.Players[game_state.In_Action];
 
             var my_cards = player.Hole_Cards;
+            //var all_cards = my_cards.( game_state.Community_Cards)
 
-            if (my_cards[0].Rank == my_cards[1].Rank)
+            if (my_cards[0].Rank == my_cards[1].Rank )
+            {
+                return player.Stack / 2;
+            }
+            else if (my_cards[0].Suit == my_cards[1].Suit)
             {
                 return player.Stack / 4;
             }
