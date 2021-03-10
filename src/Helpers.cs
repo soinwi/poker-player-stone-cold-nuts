@@ -60,5 +60,10 @@ namespace Nancy.Simple
         {
             return gameState.GetOurPlayer().Bet > gameState.Small_Blind * 2;
         }
+
+        public static bool AnyHigherThan(this Card[] cards, int reference)
+        {
+            return cards.Select(c => GetNumericCardValue(c.Rank)).Any(r => r > reference);
+        }
     }
 }
