@@ -12,7 +12,25 @@ namespace Nancy.Simple
 
         public static int GetMinimumRaiseBet(this GameState gameState)
         {
-            return gameState.Current_Buy_In - gameState.Players[gameState.In_Action].Bet + gameState.Minimum_Raise;
+            return gameState.Current_Buy_In - gameState.GetOurPlayer().Bet + gameState.Minimum_Raise;
+        }
+
+        public static int GetProposedRaise(this GameState gameState)
+        {
+            return gameState.Current_Buy_In - gameState.GetOurPlayer().Bet;
+        }
+
+        public static bool ProposedRaiseBelow(this GameState gameState, decimal percent)
+        {
+            var stack = (decimal) gameState.GetOurPlayer().Stack;
+            var proposedBet = gameState.GetProposedRaise();
+
+            return proposedBet / stack <= percent;
+        }
+
+        private static Player GetOurPlayer(this GameState gameState)
+        {
+            return gameState.Players[gameState.In_Action];
         }
     }
 }
