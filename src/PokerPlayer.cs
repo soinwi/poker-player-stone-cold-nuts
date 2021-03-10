@@ -23,15 +23,17 @@ namespace Nancy.Simple
 
             bool isHeadsUp = game_state.GetNumberOfRemainingPlayers() == 1;
 
-            // All In Stone Cold Nuts
+            // All In: FullHouse
             if (CardRecognizer.CheckFullHouse(allcards) && CardRecognizer.CheckFullHouse(comcards) == false)
             {
                 return GetHighBetOrCall(player.Stack, game_state, player);
             }
+            // Poker 
             else if (CardRecognizer.CheckQuads(allcards) && CardRecognizer.CheckQuads(comcards) == false)
             {
                 return GetHighBetOrCall(player.Stack / 2, game_state, player);
             }
+            // Flush
             else if (CardRecognizer.CheckFlush(allcards) && CardRecognizer.CheckFlush(comcards) == false)
             {
                 return GetHighBetOrCall(player.Stack / 4, game_state, player);
@@ -57,8 +59,13 @@ namespace Nancy.Simple
             {
                 return GetHighBetOrCall(player.Stack / 8, game_state, player);
             }
+            //Pairly
             else if (CardRecognizer.CheckPair(allcards) && CardRecognizer.CheckPair(comcards)==false)
             {
+                //Hat es in den Comm-Cards noch was höheres
+                bool comHasHigher = Helpers.AnyHigherThan(game_state.Community_Cards, CardRecognizer.CheckPairHeigh(allcards));
+
+                // Hohes Paar, grösser Dame
                 if (CardRecognizer.CheckPairHeigh(allcards)>=12)
                 {
                     if (game_state.Bet_Index < 5 )
@@ -72,9 +79,14 @@ namespace Nancy.Simple
                 }
                 else
                 {
+                    
                     if (isHeadsUp && game_state.Bet_Index < 5)
                     {
                         return game_state.GetMinimumRaiseBet();
+                    }
+                    else if(comHasHigher)
+                    {
+                        return 0;
                     }
                     else
                     {
