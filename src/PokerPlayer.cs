@@ -15,7 +15,7 @@ namespace Nancy.Simple
             var my_cards = player.Hole_Cards;
             if (my_cards[0].Rank == my_cards[1].Rank)
             {
-                return player.Stack
+                return player.Stack;
             }
             else
             {
