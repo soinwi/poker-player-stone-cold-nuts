@@ -58,7 +58,14 @@ namespace Nancy.Simple
             // Gleiche Farbe
             else if (my_cards[0].Suit == my_cards[1].Suit && game_state.GetNumberOfRemainingPlayers() <= 4 && game_state.ProposedRaiseBelow(0.05m))
             {
-                return game_state.GetMinimumRaiseBet();
+                if (game_state.Bet_Index < 5)
+                {
+                    return game_state.GetMinimumRaiseBet();
+                }
+                else
+                {
+                    return GetCallBet(game_state, player);
+                }
             }
             else
             {
