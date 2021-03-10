@@ -71,6 +71,23 @@ namespace Nancy.Simple
                 {
                     return 0;
                 }
+                // Bei zwei gleichen Karten in der Hand
+                else if (my_cards[0].Rank == my_cards[1].Rank)
+                {
+                    // Nur beim ersten Mal erhöhen
+                    if (game_state.ProposedRaiseBelow(0.5m) && player.Bet <= 2 * game_state.Small_Blind)
+                    {
+                        return GetHighBetOrCall(player.Stack / 16, game_state, player);
+                    }
+                    else if (CardRecognizer.CheckPairHeigh(allcards) >= 10)
+                    {
+                        return GetCallBet(game_state, player);
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
                 //Pairly
                 else if (CardRecognizer.CheckPair(allcards) && CardRecognizer.CheckPair(comcards) == false)
                 {
@@ -104,23 +121,6 @@ namespace Nancy.Simple
                         {
                             return GetCallBet(game_state, player);
                         }
-                    }
-                }
-                // Bei zwei gleichen Karten in der Hand
-                else if (my_cards[0].Rank == my_cards[1].Rank)
-                {
-                    // Nur beim ersten Mal erhöhen
-                    if (game_state.ProposedRaiseBelow(0.5m) && player.Bet <= 2 * game_state.Small_Blind)
-                    {
-                        return GetHighBetOrCall(player.Stack / 16, game_state, player);
-                    }
-                    else if (CardRecognizer.CheckPairHeigh(allcards) >= 10)
-                    {
-                        return GetCallBet(game_state, player);
-                    }
-                    else
-                    {
-                        return 0;
                     }
                 }
                 // Wenn Karten höher als 9
