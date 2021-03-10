@@ -154,7 +154,7 @@ namespace Nancy.Simple
                 // Unterschiedliche Karten 
                 else
                 {   //Mitgehen, wenn nur der BIG drin ist
-                    if (game_state.Current_Buy_In <= 2 * game_state.Small_Blind || (game_state.Current_Buy_In < player.Stack /50 && comcards.Count == 0))
+                    if ((game_state.Current_Buy_In <= 2 * game_state.Small_Blind && game_state.Small_Blind < player.Stack / 20  )|| (game_state.Current_Buy_In < player.Stack /50 && comcards.Count == 0))
                     {
                         return GetCallBet(game_state, player);
                     }
