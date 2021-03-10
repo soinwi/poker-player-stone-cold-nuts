@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
 
+
 namespace Nancy.Simple
 {
 	public static class PokerPlayer
@@ -20,7 +21,12 @@ namespace Nancy.Simple
             List<Card> comcards = new List<Card>(game_state.Community_Cards);
             mycards.AddRange(comcards);
 
-            if (my_cards[0].Rank == my_cards[1].Rank )
+
+            if (CardRecognizer.CheckStraightFlush(mycards) || CardRecognizer.CheckFullHouse(mycards))
+            {
+                return GetHighBetOrCall(player.Stack , game_state, player);
+            }
+            else if (my_cards[0].Rank == my_cards[1].Rank )
             {
                 return GetHighBetOrCall(player.Stack / 2, game_state, player);
             }
