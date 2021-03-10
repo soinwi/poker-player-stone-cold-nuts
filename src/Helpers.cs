@@ -32,5 +32,32 @@ namespace Nancy.Simple
         {
             return gameState.Players[gameState.In_Action];
         }
+
+        public static int GetNumericCardValue(string rank)
+        {
+            if (int.TryParse(rank, out var value))
+            {
+                return value;
+            }
+
+            switch (rank)
+            {
+                case "J":
+                    return 11;
+                case "Q":
+                    return 12;
+                case "K":
+                    return 13;
+                case "A":
+                    return 14;
+                default:
+                    return 0;
+            }
+        }
+
+        public static bool DidBetHigherThanBigBlind(this GameState gameState)
+        {
+            return gameState.GetOurPlayer().Bet > gameState.Small_Blind * 2;
+        }
     }
 }
