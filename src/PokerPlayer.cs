@@ -23,7 +23,7 @@ namespace Nancy.Simple
             // All In Stone Cold Nuts
             if (CardRecognizer.CheckFullHouse(mycards))
             {
-                return GetHighBetOrCall(player.Stack , game_state, player);
+                return GetHighBetOrCall(player.Stack, game_state, player);
             }
             else if (CardRecognizer.CheckQuads(mycards))
             {
@@ -33,20 +33,24 @@ namespace Nancy.Simple
             {
                 return GetHighBetOrCall(player.Stack / 4, game_state, player);
             }
+            else if (mycards.All(c => Helpers.GetNumericCardValue(c.Rank) >= 10))
+            { 
+                return GetHighBetOrCall(player.Stack / 8, game_state, player);
+            }
             // Bei zwei gleichen Karten in der Hand
-            else if (my_cards[0].Rank == my_cards[1].Rank )
+            else if (my_cards[0].Rank == my_cards[1].Rank)
             {
                 if (game_state.ProposedRaiseBelow(0.5m) && player.Bet <= 2 * game_state.Small_Blind)
                 {
                     return GetHighBetOrCall(player.Stack / 16, game_state, player);
                 }
-                else 
+                else
                 {
                     return GetCallBet(game_state, player);
                 }
             }
             // Gleiche Farbe
-            else if (my_cards[0].Suit == my_cards[1].Suit && game_state.GetNumberOfRemainingPlayers()<=4 && game_state.ProposedRaiseBelow(0.05m) )
+            else if (my_cards[0].Suit == my_cards[1].Suit && game_state.GetNumberOfRemainingPlayers() <= 4 && game_state.ProposedRaiseBelow(0.05m))
             {
                 return game_state.GetMinimumRaiseBet();
             }
