@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Nancy.Simple
 {
@@ -13,7 +15,9 @@ namespace Nancy.Simple
             var player = game_state.Players[game_state.In_Action];
 
             var my_cards = player.Hole_Cards;
-            //var all_cards = my_cards.( game_state.Community_Cards)
+            List<Card> mycards = new List<Card>(player.Hole_Cards);
+            List<Card> comcards = new List<Card>(game_state.Community_Cards);
+            mycards.AddRange(comcards);
 
             if (my_cards[0].Rank == my_cards[1].Rank )
             {
