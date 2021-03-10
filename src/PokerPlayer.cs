@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using System.Linq;
 using System;
 
 namespace Nancy.Simple
@@ -14,6 +13,7 @@ namespace Nancy.Simple
 		{
             try
             {
+                
                 //TODO: Use this method to return the value You want to bet
                 var game_state = gameState.ToObject<GameState>();
                 var player = game_state.Players[game_state.In_Action];
@@ -153,9 +153,9 @@ namespace Nancy.Simple
                 }
                 else
                 {   //Mitgehen, wenn nur der BIG drin ist
-                    if (game_state.Current_Buy_In <= 2 * game_state.Small_Blind)
+                    if (game_state.Current_Buy_In <= 2 * game_state.Small_Blind || game_state.Current_Buy_In < player.Stack /50)
                     {
-                        return game_state.Current_Buy_In - player.Bet;
+                        return GetCallBet(game_state, player);
                     }
                     //raus
                     return 0;
