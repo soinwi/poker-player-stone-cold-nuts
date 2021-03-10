@@ -20,17 +20,21 @@ namespace Nancy.Simple
             List<Card> mycards = new List<Card>(player.Hole_Cards);
             List<Card> comcards = new List<Card>(game_state.Community_Cards);
             mycards.AddRange(comcards);
-
-            if (CardRecognizer.CheckStraightFlush(mycards) || CardRecognizer.CheckFullHouse(mycards))
+            // All In Stone Cold Nuts
+            if (CardRecognizer.CheckFullHouse(mycards))
             {
                 return GetHighBetOrCall(player.Stack , game_state, player);
             }
-            else if (CardRecognizer.CheckQuads(mycards) || CardRecognizer.CheckStraight(mycards))
+            else if (CardRecognizer.CheckQuads(mycards))
             {
                 return GetHighBetOrCall(player.Stack / 2, game_state, player);
             }
+            else if (CardRecognizer.CheckFlush(mycards))
+            {
+                return GetHighBetOrCall(player.Stack / 4, game_state, player);
+            }
             // Bei zwei gleichen Karten in der Hand
-            else if (my_cards[0].Rank == my_cards[1].Rank ) 
+            else if (my_cards[0].Rank == my_cards[1].Rank && game_state.ProposedRaiseBelow(0.5m))
             {
                 return GetHighBetOrCall(player.Stack / 2, game_state, player);
             }
