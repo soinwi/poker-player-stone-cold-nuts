@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.Linq;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -21,11 +22,11 @@ namespace Nancy.Simple
 
             if (my_cards[0].Rank == my_cards[1].Rank )
             {
-                return player.Stack / 2;
+                return GetHighBetOrCall(player.Stack / 2, game_state, player);
             }
             else if (my_cards[0].Suit == my_cards[1].Suit)
             {
-                return player.Stack / 4;
+                return GetHighBetOrCall(player.Stack / 4, game_state, player);
             }
             else
             {
@@ -37,7 +38,20 @@ namespace Nancy.Simple
             }
 		}
 
-		public static void ShowDown(JObject gameState)
+        private static int GetCallBet(GameState game_state, Player player)
+        {
+            return game_state.Current_Buy_In - player.Bet;
+        }
+
+        private static int GetHighBetOrCall(int basedOnStack, GameState game_state, Player player)
+        {
+            var callBet = GetCallBet(game_state, player);
+            var bet = new[]{callBet, basedOnStack}.Max();
+
+            return bet;
+        }
+
+        public static void ShowDown(JObject gameState)
 		{
 			//TODO: Use this method to showdown
 		}
