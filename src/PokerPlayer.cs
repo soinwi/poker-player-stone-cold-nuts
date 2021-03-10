@@ -13,12 +13,17 @@ namespace Nancy.Simple
             var player = game_state.Players[game_state.In_Action];
 
             var my_cards = player.Hole_Cards;
+
             if (my_cards[0].Rank == my_cards[1].Rank)
             {
                 return player.Stack;
             }
             else
             {
+                if (game_state.Current_Buy_In == game_state.Small_Blind)
+                {
+                    return game_state.Current_Buy_In - player.Bet;
+                }
                 return 0;
             }
 		}
