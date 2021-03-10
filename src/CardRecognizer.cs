@@ -69,6 +69,16 @@ namespace Nancy.Simple
             //see if 5 or more cards card the same rank.
             return cards.GroupBy(card => card.Suit).Count(group => group.Count() >= 5) == 1;
         }
+        public static bool CheckFlushWithFour(List<Card> cards)
+        {
+            //see if 5 or more cards card the same rank.
+            return cards.GroupBy(card => card.Suit).Any(group => group.Count() >= 4);
+        }
+        public static bool CheckFlushWithTree(List<Card> cards)
+        {
+            //see if 5 or more cards card the same rank.
+            return cards.GroupBy(card => card.Suit).Any(group => group.Count() >= 3);
+        }
 
         public static bool CheckFullHouse(List<Card> cards)
         {
