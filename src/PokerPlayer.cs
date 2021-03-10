@@ -24,15 +24,15 @@ namespace Nancy.Simple
             bool isHeadsUp = game_state.GetNumberOfRemainingPlayers() == 1;
 
             // All In Stone Cold Nuts
-            if (CardRecognizer.CheckFullHouse(allcards))
+            if (CardRecognizer.CheckFullHouse(allcards) && CardRecognizer.CheckFullHouse(comcards) == false)
             {
                 return GetHighBetOrCall(player.Stack, game_state, player);
             }
-            else if (CardRecognizer.CheckQuads(allcards))
+            else if (CardRecognizer.CheckQuads(allcards) && CardRecognizer.CheckQuads(comcards) == false)
             {
                 return GetHighBetOrCall(player.Stack / 2, game_state, player);
             }
-            else if (CardRecognizer.CheckFlush(allcards))
+            else if (CardRecognizer.CheckFlush(allcards) && CardRecognizer.CheckFlush(comcards) == false)
             {
                 return GetHighBetOrCall(player.Stack / 4, game_state, player);
             }
@@ -49,7 +49,11 @@ namespace Nancy.Simple
                     return GetCallBet(game_state, player);
                 }
             }
-            else if (CardRecognizer.CheckTrips(allcards) || CardRecognizer.CheckTwoPair(allcards))
+            else if (CardRecognizer.CheckTrips(allcards) && CardRecognizer.CheckTrips(comcards) == false)
+            {
+                return GetHighBetOrCall(player.Stack / 8, game_state, player);
+            }
+            else if ( CardRecognizer.CheckTwoPair(allcards) && CardRecognizer.CheckTwoPair(comcards) == false)
             {
                 return GetHighBetOrCall(player.Stack / 8, game_state, player);
             }
