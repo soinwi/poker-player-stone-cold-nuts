@@ -35,7 +35,8 @@ namespace Nancy.Simple
 
         public static int GetNumericCardValue(string rank)
         {
-            if (int.TryParse(rank, out var value))
+            int value = 0;
+            if (int.TryParse(rank, out value))
             {
                 return value;
             }
