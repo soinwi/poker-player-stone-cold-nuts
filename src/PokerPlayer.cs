@@ -34,9 +34,16 @@ namespace Nancy.Simple
                 return GetHighBetOrCall(player.Stack / 4, game_state, player);
             }
             // Bei zwei gleichen Karten in der Hand
-            else if (my_cards[0].Rank == my_cards[1].Rank && game_state.ProposedRaiseBelow(0.5m))
+            else if (my_cards[0].Rank == my_cards[1].Rank )
             {
-                return GetHighBetOrCall(player.Stack / 2, game_state, player);
+                if (game_state.ProposedRaiseBelow(0.5m) && player.Bet <= 2 * game_state.Small_Blind)
+                {
+                    return GetHighBetOrCall(player.Stack / 16, game_state, player);
+                }
+                else 
+                {
+                    return GetCallBet(game_state, player);
+                }
             }
             // Gleiche Farbe
             else if (my_cards[0].Suit == my_cards[1].Suit && game_state.GetNumberOfRemainingPlayers()<=4 && game_state.ProposedRaiseBelow(0.05m) )
