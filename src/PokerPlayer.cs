@@ -39,7 +39,7 @@ namespace Nancy.Simple
                 return GetHighBetOrCall(player.Stack / 4, game_state, player);
             }
             // Mitgehen, wenn schon mehr des halben Stacks gesetzt
-            else if (player.Bet > player.Stack/2)
+            else if (player.Bet > player.Stack / 2)
             {
 
                 if (isHeadsUp && game_state.Bet_Index < 5)
@@ -55,20 +55,20 @@ namespace Nancy.Simple
             {
                 return GetHighBetOrCall(player.Stack / 8, game_state, player);
             }
-            else if ( CardRecognizer.CheckTwoPair(allcards) && CardRecognizer.CheckTwoPair(comcards) == false)
+            else if (CardRecognizer.CheckTwoPair(allcards) && CardRecognizer.CheckTwoPair(comcards) == false)
             {
                 return GetHighBetOrCall(player.Stack / 8, game_state, player);
             }
             //Pairly
-            else if (CardRecognizer.CheckPair(allcards) && CardRecognizer.CheckPair(comcards)==false)
+            else if (CardRecognizer.CheckPair(allcards) && CardRecognizer.CheckPair(comcards) == false)
             {
                 //Hat es in den Comm-Cards noch was höheres
                 bool comHasHigher = Helpers.AnyHigherThan(game_state.Community_Cards, CardRecognizer.CheckPairHeigh(allcards));
 
                 // Hohes Paar, grösser Dame
-                if (CardRecognizer.CheckPairHeigh(allcards)>=12)
+                if (CardRecognizer.CheckPairHeigh(allcards) >= 12)
                 {
-                    if (game_state.Bet_Index < 5 )
+                    if (game_state.Bet_Index < 5)
                     {
                         return game_state.GetMinimumRaiseBet();
                     }
@@ -79,12 +79,12 @@ namespace Nancy.Simple
                 }
                 else
                 {
-                    
+
                     if (isHeadsUp && game_state.Bet_Index < 5)
                     {
                         return game_state.GetMinimumRaiseBet();
                     }
-                    else if(comHasHigher)
+                    else if (comHasHigher)
                     {
                         return 0;
                     }
@@ -93,11 +93,6 @@ namespace Nancy.Simple
                         return GetCallBet(game_state, player);
                     }
                 }
-            }
-            // Wenn Karten höher als 9
-            else if (allcards.All(c => Helpers.GetNumericCardValue(c.Rank) >= 10))
-            { 
-                return GetHighBetOrCall(player.Stack / 8, game_state, player);
             }
             // Bei zwei gleichen Karten in der Hand
             else if (my_cards[0].Rank == my_cards[1].Rank)
@@ -108,6 +103,22 @@ namespace Nancy.Simple
                     return GetHighBetOrCall(player.Stack / 16, game_state, player);
                 }
                 else if (CardRecognizer.CheckPairHeigh(allcards) >= 10)
+                {
+                    return GetCallBet(game_state, player);
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            // Wenn Karten höher als 9
+            else if (my_cards.All(c => Helpers.GetNumericCardValue(c.Rank) >= 10))
+            {
+                if (isHeadsUp && game_state.Bet_Index < 5)
+                {
+                    return GetHighBetOrCall(player.Stack / 8, game_state, player);
+                }
+                else if (GetCallBet(game_state, player) <= player.Stack/8)
                 {
                     return GetCallBet(game_state, player);
                 }
