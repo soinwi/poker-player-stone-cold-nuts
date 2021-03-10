@@ -50,6 +50,10 @@ namespace Nancy.Simple
                         return GetCallBet(game_state, player);
                     }
                 }
+                else
+                {
+                    return GetCallBet(game_state, player);
+                }
             }
             // Mitgehen, wenn schon mehr des halben Stacks gesetzt
             else if (player.Bet > player.Stack/2)
